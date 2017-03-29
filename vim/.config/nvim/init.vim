@@ -185,7 +185,7 @@ endfunction
 
 command! W :w
 command! Vimrc :e ~/.config/nvim/init.vim
-command! DeinUpdate :call dein#install()
+command! DeinUpdate :call dein#update()
 "}}}
 
 " Mappings {{{
