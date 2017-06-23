@@ -18,9 +18,9 @@ local menubar = require("menubar")
 
 local lain = require("lain")
 local vicious = require("vicious")
--- local inspect = require("inspect")
+local inspect = require("inspect")
 
-local hotkeys_popup = require("awful.hotkeys_popup").widget.new()
+local hotkeys_popup = require("awful.hotkeys_popup.widget").new()
 
 hotkeys_popup.labels["KP_Add"] = "Num+"
 hotkeys_popup.labels["KP_Subtract"] = "Num-"
@@ -58,7 +58,8 @@ end
 beautiful.init(awful.util.get_xdg_config_home() .. "awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "urxvtc"
+-- local terminal = "st -f \"SauceCodePro Nerd Font:size=13:style=Medium\""
+local terminal = "gnome-terminal"
 local editor = os.getenv("EDITOR") or "nvim"
 local editor_cmd = terminal .. " -e " .. editor;
 
@@ -91,10 +92,15 @@ run_once("urxvtd")
 run_once("redshift-gtk")
 run_once("nm-applet")
 run_once("skypeforlinux")
+run_once("slack")
+run_once("thunderbird")
+run_once("xscreensaver")
+run_once("cbatticon")
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.floating,
+  awful.layout.suit.max,
   awful.layout.suit.tile,
   awful.layout.suit.tile.left,
   awful.layout.suit.tile.bottom,
@@ -103,7 +109,6 @@ awful.layout.layouts = {
   awful.layout.suit.fair.horizontal,
   -- awful.layout.suit.spiral,
   -- awful.layout.suit.spiral.dwindle,
-  awful.layout.suit.max,
   awful.layout.suit.max.fullscreen,
   -- awful.layout.suit.magnifier,
   -- awful.layout.suit.corner.nw,
@@ -209,7 +214,7 @@ awful.screen.connect_for_each_screen(function(s)
   set_wallpaper(s)
 
   -- Each screen has its own tag table.
-  awful.tag({ "1", "2", "3", "4" }, s, awful.layout.layouts[2])
+  awful.tag({ "1", "2", "3", "4", "5", "6" }, s, awful.layout.layouts[2])
 
   -- Create a promptbox for each screen
   s.mypromptbox = awful.widget.prompt()
@@ -266,12 +271,12 @@ function change_volume(inc)
     timeout = 1,
   }
   if inc > 0 then
-    awful.spawn("pamixer --sink 1 -i " .. inc)
+    awful.spawn("pamixer -i " .. inc)
   else
-    awful.spawn("pamixer --sink 1 -d " .. (-inc))
+    awful.spawn("pamixer -d " .. (-inc))
   end
 
-  awful.spawn.easy_async("pamixer --sink 1 --get-volume", function (stdout)
+  awful.spawn.easy_async("pamixer --get-volume", function (stdout)
     notification_config.replaces_id = topid
     notification_config.text = string.gsub(stdout, "\n", "%%")
     local notification = naughty.notify(notification_config)
@@ -287,18 +292,26 @@ function client_info(c)
     class = %s
     instance = %s
     role = %s
+    floating = %s
+    maximized = %s
+    maximized_h = %s
+    maximized_v = %s
+    is_fixed = %s
+    dockable = %s
   ]]
   naughty.notify({
     title = c.name,
     timeout = 0,
     text = string.format(info_tpl,
-      c.window, c.name, c.type, c.class, c.instance, c.role)
+      c.window, c.name, c.type, c.class, c.instance, c.role, c.floating,
+      c.maximized, c.maximized_horizontal, c.maximized_vertical, c.is_fixed(),
+      c.dockable)
   })
 end
 
 globalkeys = awful.util.table.join(
   awful.key(
-    { modkey }, "s", hotkeys_popup.show_help,
+    { modkey }, "s", function () hotkeys_popup:show_help() end,
     { description="show help", group="awesome" }
   ),
   awful.key(
@@ -323,6 +336,10 @@ globalkeys = awful.util.table.join(
   ),
   awful.key(
     { modkey }, "w", function () mainmenu:show() end,
+    { description = "show main menu", group = "awesome" }
+  ),
+  awful.key(
+    { "Control", "Mod1" }, "l", function () awful.spawn("xscreensaver-command --lock") end,
     { description = "show main menu", group = "awesome" }
   ),
 
@@ -448,7 +465,19 @@ globalkeys = awful.util.table.join(
     { description = "Volume +5%", group="system" }
   ),
   awful.key(
+    { modkey }, "Prior", function ()
+      change_volume(5)
+    end,
+    { description = "Volume +5%", group="system" }
+  ),
+  awful.key(
     { }, "XF86AudioLowerVolume", function ()
+      change_volume(-5)
+    end,
+    { description = "Volume -5%", group="system" }
+  ),
+  awful.key(
+    { modkey }, "Next", function ()
       change_volume(-5)
     end,
     { description = "Volume -5%", group="system" }
@@ -460,10 +489,46 @@ globalkeys = awful.util.table.join(
     { description = "Volume +1%", group="system" }
   ),
   awful.key(
+    { modkey, "Shift" }, "Prior", function ()
+      change_volume(1)
+    end,
+    { description = "Volume +1%", group="system" }
+  ),
+  awful.key(
     { "Shift" }, "XF86AudioLowerVolume", function ()
       change_volume(-1)
     end,
     { description = "Volume -1%", group="system" }
+  ),
+  awful.key(
+    { modkey, "Shift" }, "Next", function ()
+      change_volume(-1)
+    end,
+    { description = "Volume -1%", group="system" }
+  ),
+  awful.key(
+    { }, "XF86MonBrightnessUp", function ()
+      os.execute("light -A 5");
+    end,
+    { description = "Backlight +5%", group="system" }
+  ),
+  awful.key(
+    { }, "XF86MonBrightnessDown", function ()
+      os.execute("light -U 5");
+    end,
+    { description = "Backlight -5%", group="system" }
+  ),
+  awful.key(
+    { "Shift" }, "XF86MonBrightnessUp", function ()
+      os.execute("light -A 1");
+    end,
+    { description = "Backlight +1%", group="system" }
+  ),
+  awful.key(
+    { "Shift" }, "XF86MonBrightnessDown", function ()
+      os.execute("light -U 1");
+    end,
+    { description = "Backlight -1%", group="system" }
   ),
   awful.key(
     { modkey }, "KP_Add", function ()
@@ -551,7 +616,7 @@ clientkeys = awful.util.table.join(
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, 4 do
+for i = 1, 6 do
   globalkeys = awful.util.table.join(
     globalkeys,
     -- View tag only.
@@ -655,6 +720,7 @@ awful.rules.rules = {
       },
       role = {
         "AlarmWindow",  -- Thunderbird's calendar.
+        "EventDialog",  -- Thunderbird's calendar.
         "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
       }
     },
@@ -683,8 +749,21 @@ awful.rules.rules = {
   },
 
   {
-    rule = { name = 'urxvt' },
+    rule_any = { class = { 'Thunderbird' } },
+    properties = { tag = "2" }
+  },
+
+  {
+    rule_any = {
+      name = { 'urxvt', 'st' },
+      class = { 'Gnome-terminal' },
+    },
     properties = { size_hints_honor = false }
+  },
+
+  {
+    rule_any = { class = { 'Gitk', 'Gitg' } },
+    properties = { maximized = true }
   }
 }
 
