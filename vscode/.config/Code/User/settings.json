@@ -1,0 +1,75 @@
+{
+    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontLigatures": true,
+    "editor.renderWhitespace": "boundary",
+    "editor.renderControlCharacters": true,
+    "editor.renderLineHighlight": "all",
+    "editor.renderIndentGuides": true,
+    "editor.rulers": [88, 120],
+
+    "workbench.colorTheme": "Solarized Light",
+    "workbench.iconTheme": "vs-seti",
+    "workbench.colorCustomizations": {
+        "[Solarized Light]": {
+            "editorIndentGuide.background": "#eee8d5",
+            "editorIndentGuide.activeBackground": "#eee8d5"
+        }
+    },
+    "workbench.tree.renderIndentGuides": "always",
+    "workbench.tree.indent": 16,
+
+    "window.enableMenuBarMnemonics": false,
+    "window.menuBarVisibility": "toggle",
+
+    "files.exclude": {
+        "**/.git": false,
+        "**/.git/branches/": true,
+        "**/.git/objects/": true,
+        "**/.git/lfs/": true,
+        "**/.git/logs/": true,
+        "**/.git/refs/": true,
+        "**/.git/gitk.cache": true,
+        "**/.git/index": true,
+        "**/node_modules": false,
+    },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": false,
+
+    "search.exclude": {
+        "**/.git": true,
+    },
+
+    "vim.hlsearch": true,
+    "vim.incsearch": true,
+    "vim.leader": ",",
+    "vim.insertModeKeyBindings": [
+        { "before": ["j", "j"], "after": ["<Esc>"] }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        { "before": [";"], "after": [":"] },
+        { "before": [" "], "after": [";"] }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        { "before": [";"], "after": [":"] },
+        { "before": [" "], "after": [";"] }
+    ],
+    "vim.useSystemClipboard": true,
+    "gitlens.advanced.messages": {
+        "suppressShowKeyBindingsNotice": true
+    },
+    "gitlens.codeLens.scopes": [
+        "document"
+    ],
+    "window.zoomLevel": 0,
+    "extensions.autoUpdate": false,
+    "editor.lineNumbers": "relative",
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    },
+    "githubPullRequests.telemetry.enabled": false,
+}
