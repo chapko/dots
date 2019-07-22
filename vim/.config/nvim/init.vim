@@ -21,7 +21,7 @@ if dein#load_state(deinroot)
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('carlitux/deoplete-ternjs', { 'on_ft': 'javascript' })
   call dein#add('Shougo/neco-vim', { 'on_ft': 'vim' })
-  call dein#add('zchee/deoplete-go', {'build': 'make', 'on_ft': 'go' })
+  " call dein#add('zchee/deoplete-go', {'build': 'make', 'on_ft': 'go' })
   call dein#add('Shougo/echodoc')
 
   " Editing plugins
@@ -49,7 +49,7 @@ if dein#load_state(deinroot)
   call dein#add('elzr/vim-json', { 'on_ft': 'json' })
   call dein#add('othree/javascript-libraries-syntax.vim')
   call dein#add('tpope/vim-markdown', { 'on_ft': 'markdown' })
-  call dein#add('zchee/nvim-go', {'build': 'make'})
+  " call dein#add('zchee/nvim-go', {'build': 'make'})
   call dein#add('xolox/vim-misc')
   call dein#add('xolox/vim-lua-ftplugin')
   call dein#add('leafgarland/typescript-vim')
@@ -327,7 +327,8 @@ nmap <leader>gd :Gdiff<CR>
 " --------------------------------------
 " Open location list on update. 2 preserves cursor position
 let g:neomake_open_list = 2
-let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_javascript_enabled_makers = [] " ['eslint']
+let g:neomake_typescript_enabled_makers = []
 
 function! HideFileName()
   setlocal conceallevel=2 concealcursor=nc
@@ -409,8 +410,6 @@ let g:lua_check_syntax = 0
 let g:lua_complete_omni = 1
 let g:lua_complete_dynamic = 0
 let g:lua_define_completion_mappings = 0
-let g:deoplete#omni#functions.lua = 'xolox#lua#omnifunc'
-"let g:deoplete#omni#functions.lua = 'xolox#lua#completefunc'
 " }}}
 
 " json {{{

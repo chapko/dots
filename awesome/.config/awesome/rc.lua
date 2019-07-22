@@ -14,6 +14,8 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 
+naughty.config.defaults['icon_size'] = 40
+
 local menubar = require("menubar")
 
 local lain = require("lain")
@@ -88,14 +90,14 @@ function run_once(cmd)
   awful.spawn.with_shell("pgrep -u $USER -x "..findme.." > /dev/null || ("..cmd..")")
 end
 
-run_once("urxvtd")
+-- run_once("urxvtd")
+-- run_once("skypeforlinux")
+-- run_once("blueman-applet")
 run_once("redshift-gtk")
 run_once("nm-applet")
-run_once("skypeforlinux")
 run_once("slack")
-run_once("thunderbird")
-run_once("xscreensaver")
-run_once("cbatticon")
+run_once("cbatticon BAT0")
+run_once("xautolock")
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -222,10 +224,11 @@ awful.screen.connect_for_each_screen(function(s)
   -- We need one layoutbox per screen.
   s.mylayoutbox = awful.widget.layoutbox(s)
   s.mylayoutbox:buttons(awful.util.table.join(
-  awful.button({ }, 1, function () awful.layout.inc( 1) end),
-  awful.button({ }, 3, function () awful.layout.inc(-1) end),
-  awful.button({ }, 4, function () awful.layout.inc( 1) end),
-  awful.button({ }, 5, function () awful.layout.inc(-1) end)))
+    awful.button({ }, 1, function () awful.layout.inc( 1) end),
+    awful.button({ }, 3, function () awful.layout.inc(-1) end),
+    awful.button({ }, 4, function () awful.layout.inc( 1) end),
+    awful.button({ }, 5, function () awful.layout.inc(-1) end)
+  ))
   -- Create a taglist widget
   s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
@@ -271,9 +274,9 @@ function change_volume(inc)
     timeout = 1,
   }
   if inc > 0 then
-    awful.spawn("pamixer -i " .. inc)
+    awful.spawn("pamixer -i " .. inc, false)
   else
-    awful.spawn("pamixer -d " .. (-inc))
+    awful.spawn("pamixer -d " .. (-inc), false)
   end
 
   awful.spawn.easy_async("pamixer --get-volume", function (stdout)
@@ -339,8 +342,8 @@ globalkeys = awful.util.table.join(
     { description = "show main menu", group = "awesome" }
   ),
   awful.key(
-    { "Control", "Mod1" }, "l", function () awful.spawn("xscreensaver-command --lock") end,
-    { description = "show main menu", group = "awesome" }
+    { "Control", "Mod1" }, "l", function () awful.spawn("xautolock -locknow", false) end,
+    { description = "lock screen", group = "awesome" }
   ),
 
   -- Layout manipulation
@@ -709,6 +712,7 @@ awful.rules.rules = {
         "Gpick",
         "Kruler",
         "MessageWin",  -- kalarm.
+        "SimpleScreenRecorder",
         "Sxiv",
         "Wpa_gui",
         "pinentry",
@@ -744,12 +748,12 @@ awful.rules.rules = {
   -- },
 
   {
-    rule_any = { class = { 'skypeforlinux', 'Slack' } },
-    properties = { tag = "3" }
+    rule_any = { class = { 'TelegramDesktop', 'Slack' } },
+    properties = { tag = "4" }
   },
 
   {
-    rule_any = { class = { 'Thunderbird' } },
+    rule = { class = 'Code', type = 'normal' },
     properties = { tag = "2" }
   },
 
