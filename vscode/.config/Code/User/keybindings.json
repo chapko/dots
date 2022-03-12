@@ -1,4 +1,4 @@
-// Place your key bindings in this file to overwrite the defaults
+// Place your key bindings in this file to override the defaults
 [
     {
         "key": "alt+`",
@@ -42,11 +42,11 @@
     },
     {
         "key": "shift+alt+[",
-        "command": "workbench.action.moveEditorLeftInGroup"
+        "command": "workbench.action.previousEditorInGroup"
     },
     {
         "key": "shift+alt+]",
-        "command": "workbench.action.moveEditorRightInGroup"
+        "command": "workbench.action.nextEditorInGroup"
     },
     {
         "key": "ctrl+alt+]",
@@ -65,4 +65,3 @@
         "command": "workbench.action.tasks.runTask"
     }
 ]
-
