@@ -1,0 +1,100 @@
+[core]
+    editor = 'vim'
+    excludesfile = ~/.gitignore
+    pager = less -SFX
+
+[init]
+    defaultBranch = main
+
+[hub]
+    protocol = https
+
+[include]
+    path = ~/.gitconfig.d/user
+
+[push]
+    default = simple
+
+[alias]
+    lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    lg = log -20 --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+    purr = pull --rebase
+    ush = push  # gitp ush
+
+    hash = rev-list --max-count=1
+
+    ch = checkout
+    cb = checkout -b
+
+    ca = commit -a
+    cm = commit -m
+    cam = commit -am
+
+    fixup = commit --amend --no-edit
+    amend = commit --amend
+
+    d = diff
+    dl = diff HEAD~1 HEAD
+    dc = diff --cached
+
+    b = branch
+    # last commit of each branch
+    bl = for-each-ref --format='%(color:green)%(authorname) %(color:reset)[%(color:blue)%(refname:short)%(color:reset)] - %(color:reset)%(subject)' refs/heads
+    blr = for-each-ref --format='%(color:green)%(authorname) %(color:reset)[%(color:blue)%(refname:short)%(color:reset)] - %(color:reset)%(subject)' refs/remotes/origin
+    copyb = "!f(){ branch=$(git rev-parse --abbrev-ref HEAD) && echo $branch | tr -d '\n' | tr -d ' ' | xclip; };f"
+
+    # new branch
+    nb = "!f(){ git branch ${1} ${2} && git checkout ${1}; }; f"
+    rmbranch = "!f(){ git branch -d ${1} && git push origin --delete ${1}; };f"
+
+    a = add
+    s = status -sb
+
+    ss = stash save
+    sl = stash list
+    sp = stash pop
+
+    cf = clean -f
+
+    bi = bisect
+    good = bisect good
+    bad = bisect bad
+
+    dt = difftool
+    mt = mergetool
+
+    ignore = update-index --skip-worktree
+    unignore = update-index --no-skip-worktree
+    listignored = !git ls-files -v | grep ^[sS]
+
+    count = !git shortlog -sn
+
+[color]
+    diff = auto
+    branch = auto
+    interactive = auto
+    showbranch = auto
+    status = auto
+
+[color "diff"]
+    meta = reverse
+
+[apply]
+    whitespace = warn
+
+[merge]
+    defaultToUpstream = true
+    tool = vimdiff
+
+[diff]
+    tool = meld
+
+[mergetool]
+    # keepBackup = false
+
+[difftool]
+    prompt = false
+
+[credential]
+    helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
