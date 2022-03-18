@@ -1,4 +1,5 @@
 {
+    "editor.fontFamily": "'Fira Code', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.renderWhitespace": "boundary",
     "editor.renderControlCharacters": true,
@@ -7,6 +8,7 @@
     "editor.rulers": [88, 120],
     "editor.unicodeHighlight.nonBasicASCII": false,
     "editor.lineNumbers": "relative",
+    "editor.formatOnSave": true,
 
     "workbench.colorTheme": "Solarized Light",
     "workbench.iconTheme": "vs-seti",
@@ -22,7 +24,6 @@
 
     "window.enableMenuBarMnemonics": false,
     "window.menuBarVisibility": "toggle",
-    "window.zoomLevel": 0,
 
     "extensions.autoUpdate": false,
 
@@ -35,22 +36,20 @@
         "**/.git/refs/": true,
         "**/.git/gitk.cache": true,
         "**/.git/index": true,
-        "**/node_modules": false,
+        "**/node_modules": false
     },
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": false,
 
     "search.exclude": {
-        "**/.git": true,
+        "**/.git": true
     },
 
     "vim.hlsearch": true,
     "vim.incsearch": true,
     "vim.leader": ",",
-    "vim.insertModeKeyBindings": [
-        { "before": ["j", "j"], "after": ["<Esc>"] }
-    ],
+    "vim.insertModeKeyBindings": [{ "before": ["j", "j"], "after": ["<Esc>"] }],
     "vim.normalModeKeyBindingsNonRecursive": [
         { "before": [";"], "after": [":"] },
         { "before": [" "], "after": [";"] }
@@ -64,10 +63,5 @@
     "gitlens.codeLens.scopes": ["document"],
 
     "prettier.tabWidth": 4,
-    "[html]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
